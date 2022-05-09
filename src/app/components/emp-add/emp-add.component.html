@@ -1,0 +1,172 @@
+<div class="add-emp-container d-flex align-items-center justify-content-center">
+    <div class="add-form-container">
+        <div class="panel">
+            <div class="panel-title">
+                <h3 class="text-center">Add Employee</h3>
+            </div>
+            <div class="panel-body pt-2">
+                <form [formGroup]="empForm" (ngSubmit)="submitForm()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter name"
+                                    formControlName="employeeName">
+                                <div *ngIf="empForm.controls['employeeName'].invalid && (empForm.controls['employeeName'].dirty || empForm.controls['employeeName'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['employeeName'].errors?.['required']">
+                                        Name is required.
+                                    </div>
+                                    <div *ngIf="empForm.controls['employeeName'].errors?.['minlength']">
+                                        Name must be at least 3 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="age">Age</label>
+                                <input type="number" min="0" max="999" class="form-control" id="age" placeholder="Enter Age"
+                                    formControlName="age">
+                                <div *ngIf="empForm.controls['age'].invalid && (empForm.controls['age'].dirty || empForm.controls['age'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['age'].errors?.['required']">
+                                        Age is required.
+                                    </div>
+                                    <div *ngIf="empForm.controls['age'].errors?.['maxlength']">
+                                        Age must be at least 3 characters long.
+                                    </div>
+                                    <div *ngIf="empForm.controls['age'].errors?.['pattern']">
+                                        Invalid Age.
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="mobile">Mobile Number</label>
+                                <input type="text" class="form-control" id="mobile" maxlength="10" placeholder="Enter Phone Number"
+                                    formControlName="mobileNum">
+                                <div *ngIf="empForm.controls['mobileNum'].invalid && (empForm.controls['mobileNum'].dirty || empForm.controls['mobileNum'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['mobileNum'].errors?.['required']">
+                                        Mobile Number is required.
+                                    </div>
+                                    <div
+                                        *ngIf="empForm.controls['mobileNum'].errors?.['minlength'] || empForm.controls['mobileNum'].errors?.['maxlength'] || empForm.controls['mobileNum'].errors?.['pattern']">
+                                        Invalid Phone Number.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" [max]="todayDate" class="form-control" id="dob"
+                                    placeholder="Enter DOB" formControlName="dob">
+
+                                <!-- <input type="date" class="form-control" id="dob" [(ngModel)]="maxDate" 
+                                    placeholder="Enter DOB" formControlName="dob">  -->
+                                <div *ngIf="empForm.controls['dob'].invalid && (empForm.controls['dob'].dirty || empForm.controls['dob'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['dob'].errors?.['required']">
+                                        Date of Birth is required.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="address1">Address Line 1</label>
+                                <input type="text" class="form-control" id="address1" placeholder="Enter Address Line 1"
+                                    formControlName="addressLine1">
+                                <div *ngIf="empForm.controls['addressLine1'].invalid && (empForm.controls['addressLine1'].dirty || empForm.controls['addressLine1'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['addressLine1'].errors?.['required']">
+                                        Address is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="address2">Address Line 2</label>
+                                <input type="text" class="form-control" id="address2" placeholder="Enter Address Line 2"
+                                    formControlName="addressLine2">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="pincode">Pincode</label>
+                                <input type="number" min="0" class="form-control" id="pincode"
+                                    placeholder="Enter Pincode" formControlName="pincode">
+                                <div *ngIf="empForm.controls['pincode'].invalid && (empForm.controls['pincode'].dirty || empForm.controls['pincode'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['pincode'].errors?.['required']">
+                                        Pincode is required.
+                                    </div>
+                                    <div
+                                        *ngIf="empForm.controls['pincode'].errors?.['minlength'] || empForm.controls['pincode'].errors?.['maxlength']">
+                                        Invalid Pincode.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="state">Country</label>
+                                <select class="form-control" id="country" formControlName="countryId"
+                                    (change)="onChangeCountry()">
+                                    <option value="">Select Country</option>
+                                    <option *ngFor="let country of countryList" [value]="country.countryId">
+                                        {{country.countryName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="empForm.controls['countryId'].invalid && (empForm.controls['countryId'].dirty || empForm.controls['countryId'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['countryId'].errors?.['required']">
+                                        Invalid Country.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="country">State</label>
+                                <select class="form-control" id="state" formControlName="stateId">
+                                    <option value="">Select State</option>
+                                    <option *ngFor="let state of stateList" [value]="state.stateId">
+                                        {{state.stateName}}</option>
+                                </select>
+                                <div *ngIf="empForm.controls['stateId'].invalid && (empForm.controls['stateId'].dirty || empForm.controls['stateId'].touched) || isSubmitted"
+                                    class="text-danger">
+                                    <div *ngIf="empForm.controls['stateId'].errors?.['required']">
+                                        Invalid State.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center align-items-end gap-4">
+                            <button class="btn btn-secondary" routerLink="/" type="button">Cancel</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer"></div>
+        </div>
+    </div>
+</div>
